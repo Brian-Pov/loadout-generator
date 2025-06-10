@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destiny 2 Build Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .item-card {
+            background-color: #262A3A;
+            border: 1px solid #4A5568;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            position: relative;
+        }
+        .item-card.is-locked {
+            opacity: 0.6;
+            border-style: dashed;
+        }
+        .item-card.is-exotic {
+            border-color: #FFD700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+        .item-card.is-legendary {
+            border-color: #be95ff;
+            box-shadow: 0 0 15px rgba(190, 149, 255, 0.4);
+        }
+        .item-card.is-map {
+            border-color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        .item-card.is-jackpot {
+            border-color: #f97316;
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
+        }
+        .item-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.025em;
+        }
+        .item-name.is-exotic {
+            color: #FFD700;
+        }
+        .item-info-footer {
+            font-size: 0.8rem;
+            color: #A0AEC0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .icon-main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 0.5rem; /* Add padding to prevent text touching edges */
+        }
+        .icon-main svg {
+            width: 70%;
+            height: auto;
+            max-height: 90px;
+        }
+        .weapon-name-text {
+            white-space: normal; /* Allow text to wrap */
+            word-break: break-word; /* Break long words if necessary */
+        }
+        .icon-footer svg {
+            width: 20px;
+            height: 20px;
+        }
+        .slot-title {
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #CBD5E0;
+        }
+        .btn-generate {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0, 0.4);
+        }
+        .btn-generate:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
+
+        .lock-toggle {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .lock-toggle:disabled {
+            cursor: not-allowed;
+            opacity: 0.3;
+        }
+        .lock-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            transition: all 0.2s ease-in-out;
+        }
+        .lock-toggle.locked svg {
+            fill: #3b82f6; /* Tailwind's blue-500 */
+            filter: drop-shadow(0 0 4px #3b82f6);
+        }
+
+        /* Styles for the vertical slot reel */
+        .slot-reel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            will-change: transform;
+        }
+        .reel-item {
+            height: 12rem; /* Matches h-48 */
+            padding: 0.75rem; /* Matches p-3 */
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #1a1d26;
+        }
+    </style>
+</head>
+<body class="bg-[#111319] text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-7xl mx-auto text-center">
+        <header class="mb-8">
+            <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-2">Destiny 2 Build Generator</h1>
+            <p class="text-indigo-300 text-lg">Your complete random loadout, subclass, and map awaits.</p>
+        </header>
+
+        <div id="jackpot-display" class="hidden my-4 text-2xl font-bold text-orange-500 uppercase tracking-widest"></div>
+
+        <main id="loadout-display" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8">
+            <!-- Subclass Slot -->
+            <div class="p-4 rounded-lg bg-[#1a1d26]">
+                <h2 class="slot-title mb-4 text-left">Subclass</h2>
+                <div id="subclass-slot" class="item-card h-48 rounded-md p-3">
+                     <span class="text-gray-500 m-auto">Channeling the Light...</span>
+                </div>
+                 <div class="flex justify-center pt-3">
+                    <button id="lock-subclass" data-slot="subclass" class="lock-toggle p-2 rounded-full hover:bg-gray-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 1-2-2v-4a2 2 0 1 1 4 0v4a2 2 0 0 1-2 2Zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-3 0H9V6a3 3 0 0 1 6 0v2Z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Kinetic Slot -->
+            <div class="p-4 rounded-lg bg-[#1a1d26]">
+                <h2 class="slot-title mb-4 text-left">Kinetic</h2>
+                <div id="kinetic-slot" class="item-card h-48 rounded-md p-3">
+                    <span class="text-gray-500 m-auto">Awaiting your fate...</span>
+                </div>
+                 <div class="flex justify-center pt-3">
+                    <button id="lock-kinetic" data-slot="kinetic" class="lock-toggle p-2 rounded-full hover:bg-gray-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 1-2-2v-4a2 2 0 1 1 4 0v4a2 2 0 0 1-2 2Zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-3 0H9V6a3 3 0 0 1 6 0v2Z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Energy Slot -->
+            <div class="p-4 rounded-lg bg-[#1a1d26]">
+                <h2 class="slot-title mb-4 text-left">Energy</h2>
+                <div id="energy-slot" class="item-card h-48 rounded-md p-3">
+                     <span class="text-gray-500 m-auto">Awaiting your fate...</span>
+                </div>
+                 <div class="flex justify-center pt-3">
+                    <button id="lock-energy" data-slot="energy" class="lock-toggle p-2 rounded-full hover:bg-gray-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 1-2-2v-4a2 2 0 1 1 4 0v4a2 2 0 0 1-2 2Zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-3 0H9V6a3 3 0 0 1 6 0v2Z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Power Slot -->
+            <div class="p-4 rounded-lg bg-[#1a1d26]">
+                <h2 class="slot-title mb-4 text-left">Power</h2>
+                <div id="power-slot" class="item-card h-48 rounded-md p-3">
+                     <span class="text-gray-500 m-auto">Awaiting your fate...</span>
+                </div>
+                 <div class="flex justify-center pt-3">
+                    <button id="lock-power" data-slot="power" class="lock-toggle p-2 rounded-full hover:bg-gray-700 transition">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 1-2-2v-4a2 2 0 1 1 4 0v4a2 2 0 0 1-2 2Zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-3 0H9V6a3 3 0 0 1 6 0v2Z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Map Slot -->
+            <div class="p-4 rounded-lg bg-[#1a1d26]">
+                <h2 class="slot-title mb-4 text-left">Map</h2>
+                <div id="map-slot" class="item-card h-48 rounded-md p-3">
+                     <span class="text-gray-500 m-auto">Finding an arena...</span>
+                </div>
+                 <div class="flex justify-center pt-3">
+                    <button id="lock-map" data-slot="map" class="lock-toggle p-2 rounded-full hover:bg-gray-700 transition">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 1-2-2v-4a2 2 0 1 1 4 0v4a2 2 0 0 1-2 2Zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-3 0H9V6a3 3 0 0 1 6 0v2Z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="flex flex-col items-center">
+            <div id="button-container" class="flex flex-wrap justify-center gap-4">
+                <button id="generate-build-btn" class="btn-generate bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-10 rounded-lg text-xl shadow-lg" style="box-shadow-color: #4f46e5;">
+                    Generate Loadout
+                </button>
+            </div>
+             <p id="error-message" class="text-red-400 mt-4 h-5"></p>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- DATA & ICONS (Destiny-Inspired) ---
+        const icons = {
+            ammo: { Primary: `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="45" stroke-width="10" stroke="#fff" fill="none"/><circle cx="50" cy="50" r="25" fill="#fff"/></svg>`, Special: `<svg viewBox="0 0 100 100" fill="#a7ff83"><polygon points="50,5 95,95 5,95" stroke-width="5" stroke="#fff" fill="none"/><polygon points="50,25 80,80 20,80" fill="#fff"/></svg>`, Heavy: `<svg viewBox="0 0 100 100" fill="#8f6bff"><path d="M50 5 L95 35 L95 65 L50 95 L5 65 L5 35 Z" stroke-width="5" stroke="#fff" fill="none"/><path d="M50 25 L80 45 L80 55 L50 75 L20 55 L20 45 Z" fill="#fff"/></svg>` },
+        };
+        const subclasses = [{ name: "Solar", color: "#FF6347", icon: `<svg viewBox="0 0 24 24" stroke="#FF6347" fill="none" stroke-width="2"><path d="M12 2a4 4 0 00-4 4 4 4 0 004 4 4 4 0 004-4 4 4 0 00-4-4zM12 14a4 4 0 00-4 4 4 4 0 004 4 4 4 0 004-4 4 4 0 00-4-4zM2 12a4 4 0 004-4 4 4 0 00-4-4 4 4 0 00-4 4 4 4 0 004 4zM22 12a4 4 0 00-4-4 4 4 0 00-4 4 4 4 0 004 4 4 4 0 004-4z"/></svg>` }, { name: "Arc", color: "#00BFFF", icon: `<svg viewBox="0 0 24 24" stroke="#00BFFF" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>` }, { name: "Void", color: "#8A2BE2", icon: `<svg viewBox="0 0 24 24" stroke="#8A2BE2" fill="none" stroke-width="2"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/><path d="M12 7a5 5 0 00-5 5h10a5 5 0 00-5-5z"/></svg>` }, { name: "Stasis", color: "#4682B4", icon: `<svg viewBox="0 0 24 24" stroke="#4682B4" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l4 4-4 4-4-4 4-4zm0 18l4-4-4-4-4 4 4 4zm8-8l-4 4-4-4 4-4 4 4zM4 12l4 4-4 4-4-4 4-4z"/></svg>` }, { name: "Strand", color: "#32CD32", icon: `<svg viewBox="0 0 24 24" stroke="#32CD32" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4l9 16 9-16M3 20h18M12 4v16"/></svg>` }, { name: "Prismatic", color: "#ec4899", icon: `<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>`},];
+        const kineticElements = ['Kinetic', 'Stasis', 'Strand'];
+        const lightElements = ['Arc', 'Solar', 'Void'];
+        const pvpMaps = ["Javelin-4", "The Burnout", "Endless Vale", "Midtown", "Eternity", "Wormhaven", "The Anomaly", "Bannerfall", "Convergence", "Fragment", "Distant Shore", "Altar of Flame", "Pacifica", "Radiant Cliffs", "Disjunction", "Cathedral of Dusk", "Meltdown", "Rusted Lands", "Vostok", "Twilight Gap", "Widow's Court", "The Dead Cliffs", "Eventide Labs", "Cirrus Plaza", "Multiplex"];
+        
+        const jackpotSources = {
+             newLights: { name: "New Lights", weaponText: "Blue Rarity Only" },
+             raid: { name: 'Raid Night', weaponText: 'Raid Weapon' },
+             dungeon: { name: 'Spelunker', weaponText: 'Dungeon Weapon' },
+             vanguard: { name: 'The Vanguard\'s Armory', weaponText: 'Vanguard Weapon' },
+             crucible: { name: 'The Crucible\'s Finest', weaponText: 'Crucible Weapon' },
+             gambit: { name: 'The Drifter\'s Gambit', weaponText: 'Gambit Weapon' },
+             texMechanica: { name: "High Noon", weaponText: "Tex Mechanica Weapon" },
+             pointBlank: { name: "Point Blank", weaponText: "Sidearm, Shotgun, Sword" },
+             threeStringSymphony: { name: "Three-String Symphony", weaponText: "Bow Only"},
+             lionsPride: { name: "The Lion's Pride", weaponText: "Grenade Launcher Only"}
+        };
+       
+        const weaponPools = {
+            kinetic: [], energy: [], power: []
+        };
+
+        const genericKinetic = [ { name: "Auto Rifle", type: "Legendary", ammo: "Primary", category: "Auto Rifle", isGeneric: true }, { name: "Hand Cannon", type: "Legendary", ammo: "Primary", category: "Hand Cannon", isGeneric: true }, { name: "Pulse Rifle", type: "Legendary", ammo: "Primary", category: "Pulse Rifle", isGeneric: true }, { name: "Scout Rifle", type: "Legendary", ammo: "Primary", category: "Scout Rifle", isGeneric: true }, { name: "SMG", type: "Legendary", ammo: "Primary", category: "SMG", isGeneric: true }, { name: "Sidearm", type: "Legendary", ammo: "Primary", category: "Sidearm", isGeneric: true }, { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true }, { name: "Shotgun", type: "Legendary", ammo: "Special", category: "Shotgun", isGeneric: true }, { name: "Sniper Rifle", type: "Legendary", ammo: "Special", category: "Sniper Rifle", isGeneric: true }, { name: "Grenade Launcher", type: "Legendary", ammo: "Special", category: "Grenade Launcher", isGeneric: true }, { name: "Fusion Rifle", type: "Legendary", ammo: "Special", category: "Fusion Rifle", isGeneric: true, noElement: true }];
+        const genericEnergy = [ { name: "Auto Rifle", type: "Legendary", ammo: "Primary", category: "Auto Rifle", isGeneric: true }, { name: "Hand Cannon", type: "Legendary", ammo: "Primary", category: "Hand Cannon", isGeneric: true }, { name: "Pulse Rifle", type: "Legendary", ammo: "Primary", category: "Pulse Rifle", isGeneric: true }, { name: "Scout Rifle", type: "Legendary", ammo: "Primary", category: "Scout Rifle", isGeneric: true }, { name: "SMG", type: "Legendary", ammo: "Primary", category: "SMG", isGeneric: true }, { name: "Sidearm", type: "Legendary", ammo: "Primary", category: "Sidearm", isGeneric: true }, { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true }, { name: "Trace Rifle", type: "Legendary", ammo: "Primary", category: "Trace Rifle", isGeneric: true }, { name: "Shotgun", type: "Legendary", ammo: "Special", category: "Shotgun", isGeneric: true }, { name: "Sniper Rifle", type: "Legendary", ammo: "Special", category: "Sniper Rifle", isGeneric: true }, { name: "Fusion Rifle", type: "Legendary", ammo: "Special", category: "Fusion Rifle", isGeneric: true }, { name: "Grenade Launcher", type: "Legendary", ammo: "Special", category: "Grenade Launcher", isGeneric: true }, { name: "Glaive", type: "Legendary", ammo: "Special", category: "Glaive", isGeneric: true } ];
+        const genericPower = [ { name: "Rocket Launcher", type: "Legendary", ammo: "Heavy", category: "Rocket Launcher", isGeneric: true }, { name: "Grenade Launcher", type: "Legendary", ammo: "Heavy", category: "Grenade Launcher", isGeneric: true }, { name: "Machine Gun", type: "Legendary", ammo: "Heavy", category: "Machine Gun", isGeneric: true }, { name: "Sword", type: "Legendary", ammo: "Heavy", category: "Sword", isGeneric: true }, { name: "Linear Fusion Rifle", type: "Legendary", ammo: "Heavy", category: "Linear Fusion Rifle", isGeneric: true } ];
+
+        const exoticWeapons = {
+            kinetic: [ { name: "Wish-Ender", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Malfeasance", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "The Last Word", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Khvostov 7G-0X", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Monte Carlo", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Witherhoard", type: "Exotic", ammo: "Special", category: "Grenade Launcher" }, { name: "Izanagi's Burden", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Arbalest", type: "Exotic", ammo: "Special", category: "Linear Fusion Rifle" }, { name: "Ace of Spades", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Thorn", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Hawkmoon", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Outbreak Perfected", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "The Jade Rabbit", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "MIDA Multi-Tool", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "No Time to Explain", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Sturm", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Bad Juju", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Rat King", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "Sweet Business", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Revision Zero", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Cryosthesia 77K", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "Forerunner", type: "Exotic", ammo: "Special", category: "Sidearm" }, { name: "Euphony", type: "Exotic", ammo: "Special", category: "Linear Fusion Rifle" }, { name: "Crimson", type: "Exotic", ammo: "Primary", category: "Hand Cannon"}, { name: "Osteo Striga", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Cerberus+1", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Lumina", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Verglas Curve", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Final Warning", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "The Chaperone", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Huckleberry", type: "Exotic", ammo: "Primary", category: "SMG" }, { name: "Dead Man's Tale", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Wish-Keeper", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Wicked Implement", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Touch of Malice", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Necrochasm", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Conditional Finality", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Vigilance Wing", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Quicksilver Storm", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "No Land Beyond", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }],
+            energy: [ { name: "Sunshot", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Trinity Ghoul", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Riskrunner", type: "Exotic", ammo: "Primary", category: "SMG" }, { name: "Graviton Lance", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Jötunn", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Telesto", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Merciless", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Cloudstrike", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Tessellation", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Still Hunt", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Ager's Scepter", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Divinity", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Vex Mythoclast", type: "Exotic", ammo: "Primary", category: "Fusion Rifle" }, { name: "Le Monarque", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Symmetry", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Tommy's Matchbook", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Devil's Ruin", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ticuu's Divination", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "The Manticore", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Trespasser", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ex Diris", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Centrifuse", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Tarrabah", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Hard Light", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Borealis", type: "Exotic", ammo: "Special", category: "Sniper Rifle"}, { name: "Skyburner's Oath", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Fourth Horseman", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Lord of Wolves", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Eriana's Vow", type: "Exotic", ammo: "Special", category: "Hand Cannon" }, { name: "Dead Messenger", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Ruinous Effigy", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Delicate Tomb", type: "Exotic", ammo: "Special", category: "Fusion Rifle"}, { name: "Wavesplitter", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Prometheus Lens", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Coldheart", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Buried Bloodline", type: "Exotic", ammo: "Special", category: "Sidearm"}, { name: "The Navigator", type: "Exotic", ammo: "Special", category: "Trace Rifle"}, { name: "Hierarchy of Needs", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "Collective Obligation", type: "Exotic", ammo: "Primary", category: "Pulse Rifle"}, { name: "Polaris Lance", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Duality", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Red Death Reformed", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" } ],
+            power: [ { name: "Gjallarhorn", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "The Lament", type: "Exotic", ammo: "Heavy", category: "Sword" }, { name: "Thunderlord", type: "Exotic", ammo: "Heavy", category: "Machine Gun" }, { name: "Leviathan's Breath", type: "Exotic", ammo: "Heavy", category: "Bow" }, { name: "Sleeper Simulant", type: "Exotic", ammo: "Heavy", category: "Linear Fusion Rifle" }, { name: "Tractor Cannon", type: "Exotic", ammo: "Heavy", category: "Shotgun" }, { name: "Dragon's Breath", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "Xenophage", type: "Exotic", ammo: "Heavy", category: "Machine Gun"}, { name: "The Prospector", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Two-Tailed Fox", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Black Talon", type: "Exotic", ammo: "Heavy", category: "Sword"}, { name: "Deathbringer", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Wardcliff Coil", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Eyes of Tomorrow", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Colony", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Microcosm", type: "Exotic", ammo: "Heavy", category: "Trace Rifle" } ]
+        };
+        
+        weaponPools.kinetic = [...exoticWeapons.kinetic, ...genericKinetic];
+        weaponPools.energy = [...exoticWeapons.energy, ...genericEnergy];
+        weaponPools.power = [...exoticWeapons.power, ...genericPower];
+
+        let currentBuild = null;
+        let lockStates = {
+            subclass: false,
+            kinetic: false,
+            energy: false,
+            power: false,
+            map: false,
+        };
+
+        const dom = { 
+            subclass: document.getElementById('subclass-slot'), 
+            kinetic: document.getElementById('kinetic-slot'), 
+            energy: document.getElementById('energy-slot'), 
+            power: document.getElementById('power-slot'), 
+            map: document.getElementById('map-slot'), 
+            buttonContainer: document.getElementById('button-container'), 
+            errorMessage: document.getElementById('error-message'),
+            lockToggles: document.querySelectorAll('.lock-toggle'),
+            jackpotDisplay: document.getElementById('jackpot-display'),
+            generateBtn: document.getElementById('generate-build-btn')
+        };
+        
+        // --- FONT LOADING & INITIAL STATE ---
+        const allGenerateButtons = dom.buttonContainer.querySelectorAll('button');
+        allGenerateButtons.forEach(button => button.disabled = true);
+        dom.lockToggles.forEach(toggle => toggle.disabled = true);
+        
+        document.fonts.ready.then(() => {
+            allGenerateButtons.forEach(button => button.disabled = false);
+        });
+
+        // --- FUNCTIONS ---
+        const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        const createWeaponCardContent = (weapon, jackpotTheme = null) => { 
+            const isExotic = weapon.type === 'Exotic'; 
+            const title = jackpotTheme ? jackpotTheme : weapon.category;
+            return `<div class="reel-item">
+                        <h3 class="item-name !text-base !font-normal normal-case ${isExotic ? 'text-gray-400' : 'text-gray-400'}">${title}</h3>
+                        <div class="icon-main">
+                            <span class="weapon-name-text text-xl md:text-2xl font-bold leading-tight ${isExotic ? 'text-yellow-300' : 'text-white'}">${weapon.name}</span>
+                        </div>
+                        <div class="item-info-footer">
+                            <div class="icon-footer" style="color:${isExotic ? '#FFD700' : 'white'}">${icons.ammo[weapon.ammo] || ''}</div>
+                            <span>${weapon.ammo}</span>
+                        </div>
+                    </div>`; 
+        };
+        const createSubclassCardContent = (subclass) => `<div class="reel-item"><h3 class="item-name" style="color:${subclass.color}">${subclass.name}</h3><div class="icon-main">${subclass.icon}</div><div class="item-info-footer"><span>Element</span></div></div>`;
+        const createMapCardContent = (mapName) => `
+            <div class="reel-item">
+                <h3 class="item-name !text-base !font-normal normal-case text-gray-400">Crucible Map</h3>
+                <div class="icon-main">
+                    <span class="text-2xl font-bold text-white">${mapName}</span>
+                </div>
+                <div class="item-info-footer">
+                    <span>Arena</span>
+                </div>
+            </div>`;
+
+        const animateSlot = (slotElement, itemPool, finalItem, duration, createContentFunc, jackpotTheme = null) => {
+            return new Promise(resolve => {
+                const reel = document.createElement('div');
+                reel.className = 'slot-reel';
+                
+                const reelItemCount = 30;
+                let reelHTML = '';
+                for (let i = 0; i < reelItemCount - 1; i++) {
+                    reelHTML += createContentFunc(getRandomItem(itemPool), jackpotTheme);
+                }
+                reelHTML += createContentFunc(finalItem, jackpotTheme);
+                reel.innerHTML = reelHTML;
+
+                slotElement.innerHTML = '';
+                slotElement.appendChild(reel);
+
+                const itemHeight = slotElement.getBoundingClientRect().height;
+                const finalPosition = -((reelItemCount - 1) * itemHeight);
+
+                reel.offsetHeight; 
+
+                reel.style.transition = `transform ${duration / 1000}s cubic-bezier(0.25, 1, 0.5, 1)`;
+                reel.style.transform = `translateY(${finalPosition}px)`;
+
+                reel.addEventListener('transitionend', () => {
+                    resolve();
+                }, { once: true });
+            });
+        };
+        
+        const generateNewValidBuild = (lockedItems) => {
+            let attempts = 0;
+            while(attempts < 200) { 
+                attempts++;
+
+                let { kineticWeapon, energyWeapon, powerWeapon } = lockedItems;
+                const hasLockedExotic = !!(kineticWeapon?.type === 'Exotic' || energyWeapon?.type === 'Exotic' || powerWeapon?.type === 'Exotic');
+                const rollForExotic = !hasLockedExotic && Math.random() < 0.7;
+                
+                const unlockedSlots = [];
+                if (!kineticWeapon) unlockedSlots.push('kinetic');
+                if (!energyWeapon) unlockedSlots.push('energy');
+                if (!powerWeapon) unlockedSlots.push('power');
+                
+                const exoticSlot = rollForExotic && unlockedSlots.length > 0 ? getRandomItem(unlockedSlots) : null;
+                
+                if (!powerWeapon) {
+                    const powerPool = weaponPools.power.filter(w => exoticSlot === 'power' ? w.type === 'Exotic' : w.type === 'Legendary');
+                    if (!powerPool.length) continue;
+                    powerWeapon = getRandomItem(powerPool);
+                }
+                
+                 if (!kineticWeapon) {
+                    const kineticPool = weaponPools.kinetic.filter(w => exoticSlot === 'kinetic' ? w.type === 'Exotic' : w.type === 'Legendary');
+                    if (!kineticPool.length) continue;
+                    kineticWeapon = getRandomItem(kineticPool);
+                }
+                if (!energyWeapon) {
+                    let energyPool = weaponPools.energy.filter(w => exoticSlot === 'energy' ? w.type === 'Exotic' : w.type === 'Legendary');
+                    if (kineticWeapon.ammo === 'Special') {
+                            energyPool = energyPool.filter(w => w.ammo === 'Primary');
+                    }
+                    if (!energyPool.length) continue;
+                    energyWeapon = getRandomItem(energyPool);
+                }
+                
+
+                if(kineticWeapon && energyWeapon && powerWeapon) {
+                    if (kineticWeapon.ammo === 'Special' && energyWeapon.ammo === 'Special') continue;
+                    
+                    if (kineticWeapon.isGeneric && !lockedItems.kineticWeapon && Math.random() < 0.5 && !kineticWeapon.noElement) {
+                        kineticWeapon = {...kineticWeapon, name: `${getRandomItem(kineticElements)} ${kineticWeapon.name}`};
+                    }
+                     if (energyWeapon.isGeneric && !lockedItems.energyWeapon && Math.random() < 0.5) {
+                        energyWeapon = {...energyWeapon, name: `${getRandomItem(lightElements)} ${energyWeapon.name}`};
+                    }
+                   
+                    return {
+                        subclass: lockedItems.subclass || getRandomItem(subclasses),
+                        kineticWeapon,
+                        energyWeapon,
+                        powerWeapon,
+                        map: lockedItems.map || getRandomItem(pvpMaps)
+                    };
+                }
+            }
+            return null; 
+        }
+        
+        dom.generateBtn.addEventListener('click', async () => {
+            allGenerateButtons.forEach(b => b.disabled = true);
+            const originalText = dom.generateBtn.textContent;
+            dom.generateBtn.textContent = 'Generating...';
+            dom.errorMessage.textContent = '';
+            dom.jackpotDisplay.classList.add('hidden');
+            
+            Object.keys(lockStates).forEach(key => { 
+                 if (!lockStates[key]) {
+                    const el = dom[key];
+                     if(el) {
+                        el.classList.remove('is-exotic', 'is-legendary', 'is-map', 'is-jackpot');
+                        el.style.borderColor = '';
+                        el.style.boxShadow = '';
+                     }
+                }
+            });
+
+            const isAnySlotLocked = Object.values(lockStates).some(state => state);
+            const isJackpotRoll = !isAnySlotLocked && Math.random() < 0.15;
+            let jackpotTheme = null;
+            let loadout;
+
+            if (isJackpotRoll) {
+                const specialThemes = Object.keys(jackpotSources);
+                const randomThemeKey = getRandomItem(specialThemes);
+                jackpotTheme = jackpotSources[randomThemeKey];
+                
+                if (randomThemeKey === 'pointBlank') {
+                    loadout = {
+                        kineticWeapon: { name: 'Sidearm/Shotgun/Sword', type: 'Legendary', ammo: 'Any', category: 'Point Blank', isGeneric: true },
+                        energyWeapon: { name: 'Sidearm/Shotgun/Sword', type: 'Legendary', ammo: 'Any', category: 'Point Blank', isGeneric: true },
+                        powerWeapon: { name: 'Sidearm/Shotgun/Sword', type: 'Legendary', ammo: 'Any', category: 'Point Blank', isGeneric: true },
+                    };
+                } else if (randomThemeKey === 'threeStringSymphony') {
+                     loadout = {
+                        kineticWeapon: { name: 'Bow Only', type: 'Legendary', ammo: 'Primary', category: 'Three-String Symphony', isGeneric: true },
+                        energyWeapon: { name: 'Bow Only', type: 'Legendary', ammo: 'Primary', category: 'Three-String Symphony', isGeneric: true },
+                        powerWeapon: { name: "Leviathan's Breath", type: "Exotic", ammo: "Heavy", category: "Bow" },
+                    };
+                } else if (randomThemeKey === 'lionsPride') {
+                     loadout = {
+                        kineticWeapon: { name: 'Grenade Launcher', type: 'Legendary', ammo: 'Special', category: 'The Lion\'s Pride', isGeneric: true },
+                        energyWeapon: { name: 'Fighting Lion', type: 'Exotic', ammo: 'Primary', category: 'Grenade Launcher' },
+                        powerWeapon: { name: 'Grenade Launcher', type: "Legendary", ammo: 'Heavy', category: 'The Lion\'s Pride', isGeneric: true },
+                    };
+                }
+                else {
+                     loadout = {
+                        kineticWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
+                        energyWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
+                        powerWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
+                    };
+                }
+                dom.jackpotDisplay.textContent = jackpotTheme.name;
+                dom.jackpotDisplay.classList.remove('hidden');
+                
+            } else {
+                 const lockedItems = {};
+                if (lockStates.subclass) lockedItems.subclass = currentBuild.subclass;
+                if (lockStates.kinetic) lockedItems.kineticWeapon = currentBuild.kineticWeapon;
+                if (lockStates.energy) lockedItems.energyWeapon = currentBuild.energyWeapon;
+                if (lockStates.power) lockedItems.powerWeapon = currentBuild.powerWeapon;
+                if (lockStates.map) lockedItems.map = currentBuild.map;
+                loadout = generateNewValidBuild(lockedItems);
+            }
+
+            if (!loadout) {
+                 dom.errorMessage.textContent = 'Could not generate a valid loadout. Please try again.';
+                 allGenerateButtons.forEach(b => b.disabled = false);
+                 dom.generateBtn.textContent = originalText;
+                 return;
+            }
+            
+            currentBuild = currentBuild || {};
+            if (!lockStates.subclass) currentBuild.subclass = loadout.subclass || getRandomItem(subclasses);
+            if (!lockStates.kinetic) currentBuild.kineticWeapon = loadout.kineticWeapon;
+            if (!lockStates.energy) currentBuild.energyWeapon = loadout.energyWeapon;
+            if (!lockStates.power) currentBuild.powerWeapon = loadout.powerWeapon;
+            if (!lockStates.map) currentBuild.map = loadout.map || getRandomItem(pvpMaps);
+
+            const { kineticWeapon, energyWeapon, powerWeapon, subclass, map } = currentBuild;
+            
+            const animations = [];
+            
+            if (!lockStates.subclass) animations.push(animateSlot(dom.subclass, subclasses, subclass, 1000, createSubclassCardContent));
+            if (!lockStates.kinetic) animations.push(animateSlot(dom.kinetic, isJackpotRoll ? [kineticWeapon] : weaponPools.kinetic, kineticWeapon, 1500, createWeaponCardContent, isJackpotRoll ? jackpotTheme.name : null));
+            if (!lockStates.energy) animations.push(animateSlot(dom.energy, isJackpotRoll ? [energyWeapon] : weaponPools.energy, energyWeapon, 2000, createWeaponCardContent, isJackpotRoll ? jackpotTheme.name : null));
+            if (!lockStates.power) animations.push(animateSlot(dom.power, isJackpotRoll ? [powerWeapon] : weaponPools.power, powerWeapon, 2500, createWeaponCardContent, isJackpotRoll ? jackpotTheme.name : null));
+            if (!lockStates.map) animations.push(animateSlot(dom.map, pvpMaps, map, 3000, createMapCardContent));
+
+            await Promise.all(animations);
+            
+            if (isJackpotRoll) {
+                dom.kinetic.classList.add('is-jackpot');
+                dom.energy.classList.add('is-jackpot');
+                dom.power.classList.add('is-jackpot');
+            } else {
+                if (kineticWeapon.type === 'Exotic') { dom.kinetic.classList.add('is-exotic'); } else { dom.kinetic.classList.add('is-legendary'); }
+                if (energyWeapon.type === 'Exotic') { dom.energy.classList.add('is-exotic'); } else { dom.energy.classList.add('is-legendary'); }
+                if (powerWeapon.type === 'Exotic') { dom.power.classList.add('is-exotic'); } else { dom.power.classList.add('is-legendary'); }
+            }
+            
+            dom.map.classList.add('is-map');
+            const subclassColor = subclass.color;
+            dom.subclass.style.borderColor = subclassColor;
+            dom.subclass.style.boxShadow = `0 0 15px ${subclassColor}66`;
+
+            allGenerateButtons.forEach(b => b.disabled = false);
+            dom.lockToggles.forEach(toggle => toggle.disabled = false); 
+            dom.generateBtn.textContent = originalText;
+        });
+
+        dom.lockToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                if(!currentBuild) return; 
+                const slot = toggle.dataset.slot;
+                lockStates[slot] = !lockStates[slot];
+                toggle.classList.toggle('locked', lockStates[slot]);
+                dom[slot].classList.toggle('is-locked', lockStates[slot]);
+            });
+        });
+
+    </script>
+</body>
+</html>
