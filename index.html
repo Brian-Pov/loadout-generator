@@ -259,7 +259,7 @@
                  crucible: { name: 'The Crucible\'s Finest', weaponText: 'Crucible Weapon' },
                  gambit: { name: 'The Drifter\'s Gambit', weaponText: 'Gambit Weapon' },
                  texMechanica: { name: "High Noon", weaponText: "Tex Mechanica Weapon" },
-                 pointBlank: { name: "Point Blank", weaponText: "Close Quarters" },
+                 pointBlank: { name: "Point Blank", weaponText: "Sidearm, Shotgun, or Sword" },
                  threeStringSymphony: { name: "Three-String Symphony", weaponText: "Bow Only"},
                  lionsPride: { name: "The Lion's Pride", weaponText: "Grenade Launcher Only"},
                  blackArmory: { name: "Black Armory's Legacy", weaponText: "Black Armory Weapon" },
@@ -277,7 +277,7 @@
 
             const exoticWeapons = {
                 kinetic: [ { name: "Wish-Ender", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Malfeasance", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "The Last Word", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Khvostov 7G-0X", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Monte Carlo", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Witherhoard", type: "Exotic", ammo: "Special", category: "Grenade Launcher" }, { name: "Izanagi's Burden", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Arbalest", type: "Exotic", ammo: "Special", category: "Linear Fusion Rifle" }, { name: "Ace of Spades", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Thorn", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Hawkmoon", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Outbreak Perfected", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "The Jade Rabbit", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "MIDA Multi-Tool", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "No Time to Explain", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Sturm", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Bad Juju", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Rat King", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "Sweet Business", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Revision Zero", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Cryosthesia 77K", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "Forerunner", type: "Exotic", ammo: "Special", category: "Sidearm" }, { name: "Euphony", type: "Exotic", ammo: "Special", category: "Linear Fusion Rifle" }, { name: "Crimson", type: "Exotic", ammo: "Primary", category: "Hand Cannon"}, { name: "Osteo Striga", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Cerberus+1", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Lumina", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Verglas Curve", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Final Warning", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "The Chaperone", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Huckleberry", type: "Exotic", ammo: "Primary", category: "SMG" }, { name: "Dead Man's Tale", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Wish-Keeper", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Wicked Implement", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Touch of Malice", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Necrochasm", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Conditional Finality", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Vigilance Wing", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Quicksilver Storm", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "No Land Beyond", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }],
-                energy: [ { name: "Sunshot", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Trinity Ghoul", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Riskrunner", type: "Exotic", ammo: "Primary", category: "SMG" }, { name: "Graviton Lance", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Jötunn", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Telesto", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Merciless", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Cloudstrike", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Tessellation", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Still Hunt", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Ager's Scepter", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Divinity", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Vex Mythoclast", type: "Exotic", ammo: "Primary", category: "Fusion Rifle" }, { name: "Le Monarque", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Symmetry", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Tommy's Matchbook", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Devil's Ruin", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ticuu's Divination", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "The Manticore", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Trespasser", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ex Diris", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Centrifuse", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Tarrabah", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Hard Light", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Borealis", type: "Exotic", ammo: "Special", category: "Sniper Rifle"}, { name: "Skyburner's Oath", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Fourth Horseman", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Lord of Wolves", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Eriana's Vow", type: "Exotic", ammo: "Special", category: "Hand Cannon" }, { name: "Dead Messenger", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Ruinous Effigy", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Delicate Tomb", type: "Exotic", ammo: "Special", category: "Fusion Rifle"}, { name: "Wavesplitter", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Prometheus Lens", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Coldheart", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Buried Bloodline", type: "Exotic", ammo: "Special", category: "Sidearm"}, { name: "The Navigator", type: "Exotic", ammo: "Special", category: "Trace Rifle"}, { name: "Hierarchy of Needs", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "Collective Obligation", type: "Exotic", ammo: "Primary", category: "Pulse Rifle"}, { name: "Polaris Lance", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Duality", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Red Death Reformed", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" } ],
+                energy: [ { name: "Sunshot", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Trinity Ghoul", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Riskrunner", type: "Exotic", ammo: "Primary", category: "SMG" }, { name: "Graviton Lance", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Jötunn", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Telesto", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Merciless", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Cloudstrike", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Tessellation", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Still Hunt", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Ager's Scepter", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Divinity", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Vex Mythoclast", type: "Exotic", ammo: "Primary", category: "Fusion Rifle" }, { name: "Le Monarque", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Symmetry", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Tommy's Matchbook", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Devil's Ruin", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ticuu's Divination", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "The Manticore", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Trespasser", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ex Diris", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Centrifuse", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Tarrabah", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Hard Light", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Borealis", type: "Exotic", ammo: "Special", category: "Sniper Rifle"}, { name: "Skyburner's Oath", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Fourth Horseman", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Lord of Wolves", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Eriana's Vow", type: "Exotic", ammo: "Special", category: "Hand Cannon" }, { name: "Dead Messenger", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Fighting Lion", type: "Exotic", ammo: "Primary", category: "Grenade Launcher"}, { name: "Ruinous Effigy", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Delicate Tomb", type: "Exotic", ammo: "Special", category: "Fusion Rifle"}, { name: "Wavesplitter", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Prometheus Lens", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Coldheart", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Buried Bloodline", type: "Exotic", ammo: "Special", category: "Sidearm"}, { name: "The Navigator", type: "Exotic", ammo: "Special", category: "Trace Rifle"}, { name: "Hierarchy of Needs", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "Collective Obligation", type: "Exotic", ammo: "Primary", category: "Pulse Rifle"}, { name: "Polaris Lance", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Duality", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Red Death Reformed", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" } ],
                 power: [ { name: "Gjallarhorn", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "The Lament", type: "Exotic", ammo: "Heavy", category: "Sword" }, { name: "Thunderlord", type: "Exotic", ammo: "Heavy", category: "Machine Gun" }, { name: "Leviathan's Breath", type: "Exotic", ammo: "Heavy", category: "Bow" }, { name: "Sleeper Simulant", type: "Exotic", ammo: "Heavy", category: "Linear Fusion Rifle" }, { name: "Tractor Cannon", type: "Exotic", ammo: "Heavy", category: "Shotgun" }, { name: "Dragon's Breath", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "Xenophage", type: "Exotic", ammo: "Heavy", category: "Machine Gun"}, { name: "The Prospector", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Two-Tailed Fox", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Black Talon", type: "Exotic", ammo: "Heavy", category: "Sword"}, { name: "Deathbringer", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Wardcliff Coil", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Eyes of Tomorrow", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Colony", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Microcosm", type: "Exotic", ammo: "Heavy", category: "Trace Rifle" } ]
             };
             
@@ -300,20 +300,39 @@
                 energy: document.getElementById('energy-slot'), 
                 power: document.getElementById('power-slot'), 
                 map: document.getElementById('map-slot'), 
-                buttonContainer: document.getElementById('button-container'), 
                 errorMessage: document.getElementById('error-message'),
                 lockToggles: document.querySelectorAll('.lock-toggle'),
                 jackpotDisplay: document.getElementById('jackpot-display'),
-                generateBtn: document.getElementById('generate-build-btn')
+                generateBtn: document.getElementById('generate-build-btn'),
+                specialLoadoutsToggle: document.getElementById('special-loadouts')
             };
             
-            // --- FONT LOADING & INITIAL STATE ---
-            dom.generateBtn.disabled = true;
-            dom.lockToggles.forEach(toggle => toggle.disabled = true);
-            
-            document.fonts.ready.then(() => {
-                dom.generateBtn.disabled = false;
-            });
+            // --- INITIALIZATION ---
+            function init() {
+                dom.generateBtn.disabled = true;
+                dom.lockToggles.forEach(toggle => toggle.disabled = true);
+                
+                document.fonts.ready.then(() => {
+                    dom.generateBtn.disabled = false;
+                });
+                
+                // --- EVENT LISTENERS ---
+                dom.generateBtn.addEventListener('click', () => {
+                    const forceJackpot = dom.specialLoadoutsToggle.checked;
+                    handleGeneration(forceJackpot);
+                });
+        
+                dom.lockToggles.forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        if(!currentBuild) return; 
+                        const slot = toggle.dataset.slot;
+                        lockStates[slot] = !lockStates[slot];
+                        toggle.classList.toggle('locked', lockStates[slot]);
+                        dom[slot].classList.toggle('is-locked', lockStates[slot]);
+                    });
+                });
+            }
+
     
             // --- FUNCTIONS ---
             const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -323,19 +342,27 @@
                 let title = jackpotTheme ? jackpotTheme.name : weapon.category;
                 let weaponName = weapon.name;
                 
-                if (jackpotTheme && typeof jackpotTheme.weaponText === 'object') {
-                     if (weapon.slot === 'kinetic') weaponName = jackpotTheme.weaponText.kinetic;
-                     else if (weapon.slot === 'energy') weaponName = jackpotTheme.weaponText.energy;
-                     else if (weapon.slot === 'power') weaponName = jackpotTheme.weaponText.power;
-                     title = jackpotTheme.name;
-                } else if (jackpotTheme) {
-                     title = jackpotTheme.name;
-                     weaponName = jackpotTheme.weaponText;
+                if (jackpotTheme) {
+                    // For standard jackpots, display the theme's weapon text
+                    if (jackpotTheme.weaponText && typeof jackpotTheme.weaponText !== 'object') {
+                        weaponName = jackpotTheme.weaponText;
+                    }
+                    // For complex jackpots like Foundry Clash
+                    else if (jackpotTheme.weaponText && typeof jackpotTheme.weaponText === 'object') {
+                         if (weapon.slot === 'kinetic') weaponName = jackpotTheme.weaponText.kinetic;
+                         else if (weapon.slot === 'energy') weaponName = jackpotTheme.weaponText.energy;
+                         else if (weapon.slot === 'power') weaponName = jackpotTheme.weaponText.power;
+                    }
+                     // For specific weapon jackpots, the name is already set
+                    else if (!jackpotTheme.weaponText) {
+                         weaponName = weapon.name;
+                    }
+                    title = jackpotTheme.name;
                 }
                
                 return `<div class="reel-item" style="height: 100%;">
                             <div class="item-header">
-                                <h3 class="item-name !text-xs sm:!text-sm !font-normal normal-case ${isExotic ? 'text-gray-400' : 'text-gray-400'}">${title}</h3>
+                                <h3 class="item-name !text-xs sm:!text-sm !font-normal normal-case text-gray-400">${title}</h3>
                             </div>
                             <div class="icon-main">
                                 <span class="weapon-name-text text-lg sm:text-xl md:text-2xl font-bold leading-tight ${isExotic ? 'text-yellow-300' : 'text-white'}">${weaponName}</span>
@@ -360,6 +387,11 @@
     
             const animateSlot = (slotElement, itemPool, finalItem, duration, createContentFunc, jackpotTheme = null) => {
                 return new Promise(resolve => {
+                    if (!slotElement) {
+                        console.error('animateSlot was called with an invalid slotElement.');
+                        resolve();
+                        return;
+                    }
                     const reel = document.createElement('div');
                     reel.className = 'slot-reel';
                     
@@ -384,6 +416,7 @@
                     });
                     
                     reel.addEventListener('transitionend', () => {
+                        slotElement.innerHTML = createContentFunc(finalItem, jackpotTheme);
                         resolve();
                     }, { once: true });
                 });
@@ -448,7 +481,7 @@
                 return null; 
             }
             
-            const handleGeneration = async (isJackpotForced = false) => {
+            async function handleGeneration(isJackpotForced = false) {
                 const button = dom.generateBtn;
                 button.disabled = true;
                 const originalText = button.textContent;
@@ -478,25 +511,34 @@
                     const randomThemeKey = getRandomItem(specialThemes);
                     jackpotTheme = jackpotSources[randomThemeKey];
                     
-                    if (typeof jackpotTheme.weaponText === 'object') {
+                    // Specific Jackpot Logic
+                    if (randomThemeKey === 'threeStringSymphony') {
+                        const levisBreath = exoticWeapons.power.find(w => w.name === "Leviathan's Breath");
+                        loadout = {
+                            kineticWeapon: { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true, slot: 'kinetic' },
+                            energyWeapon: { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true, slot: 'energy' },
+                            powerWeapon: { ...levisBreath, slot: 'power' },
+                        };
+                        jackpotTheme.weaponText = null; // Use specific names
+                    } else if (randomThemeKey === 'lionsPride') {
+                        const fightingLion = exoticWeapons.energy.find(w => w.name === "Fighting Lion");
+                        loadout = {
+                            kineticWeapon: { name: "Grenade Launcher", type: "Legendary", ammo: "Special", category: "Grenade Launcher", isGeneric: true, slot: 'kinetic' },
+                            energyWeapon: { ...fightingLion, slot: 'energy' },
+                            powerWeapon: { name: "Grenade Launcher", type: "Legendary", ammo: "Heavy", category: "Grenade Launcher", isGeneric: true, slot: 'power' },
+                        };
+                         jackpotTheme.weaponText = null; // Use specific names
+                    } else if (typeof jackpotTheme.weaponText === 'object') {
                          loadout = {
                             kineticWeapon: { name: jackpotTheme.weaponText.kinetic, slot: 'kinetic', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name },
                             energyWeapon: { name: jackpotTheme.weaponText.energy, slot: 'energy', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name },
                             powerWeapon: { name: jackpotTheme.weaponText.power, slot: 'power', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name },
                         };
-                        if (randomThemeKey === 'threeStringSymphony') {
-                             loadout.powerWeapon.type = 'Exotic';
-                             loadout.powerWeapon.ammo = 'Heavy';
-                        }
-                        if (randomThemeKey === 'lionsPride') {
-                            loadout.energyWeapon.type = 'Exotic';
-                            loadout.energyWeapon.ammo = 'Primary';
-                        }
                     } else {
                          loadout = {
-                            kineticWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
-                            energyWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
-                            powerWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
+                            kineticWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
+                            energyWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
+                            powerWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'power' },
                         };
                     }
                     dom.jackpotDisplay.textContent = jackpotTheme.name;
@@ -531,11 +573,11 @@
                 const animations = [];
                 const dummyPool = [kineticWeapon, energyWeapon, powerWeapon];
     
-                if (!lockStates.subclass) animations.push(animateSlot(dom.subclass, subclasses, subclass, 1000, createSubclassCardContent, isJackpotRoll ? jackpotTheme : null));
-                if (!lockStates.kinetic) animations.push(animateSlot(dom.kinetic, isJackpotRoll ? dummyPool : weaponPools.kinetic, kineticWeapon, 1500, createWeaponCardContent, isJackpotRoll ? jackpotTheme.name : null));
-                if (!lockStates.energy) animations.push(animateSlot(dom.energy, isJackpotRoll ? dummyPool : weaponPools.energy, energyWeapon, 2000, createWeaponCardContent, isJackpotRoll ? jackpotTheme.name : null));
-                if (!lockStates.power) animations.push(animateSlot(dom.power, isJackpotRoll ? dummyPool : weaponPools.power, powerWeapon, 2500, createWeaponCardContent, isJackpotRoll ? jackpotTheme.name : null));
-                if (!lockStates.map) animations.push(animateSlot(dom.map, pvpMaps, map, 3000, createMapCardContent, isJackpotRoll ? jackpotTheme.name : null));
+                if (!lockStates.subclass) animations.push(animateSlot(dom.subclass, subclasses, subclass, 1000, createSubclassCardContent, jackpotTheme));
+                if (!lockStates.kinetic) animations.push(animateSlot(dom.kinetic, isJackpotRoll ? dummyPool : weaponPools.kinetic, kineticWeapon, 1500, createWeaponCardContent, jackpotTheme));
+                if (!lockStates.energy) animations.push(animateSlot(dom.energy, isJackpotRoll ? dummyPool : weaponPools.energy, energyWeapon, 2000, createWeaponCardContent, jackpotTheme));
+                if (!lockStates.power) animations.push(animateSlot(dom.power, isJackpotRoll ? dummyPool : weaponPools.power, powerWeapon, 2500, createWeaponCardContent, jackpotTheme));
+                if (!lockStates.map) animations.push(animateSlot(dom.map, pvpMaps, map, 3000, createMapCardContent, jackpotTheme));
     
                 await Promise.all(animations);
                 
@@ -543,33 +585,25 @@
                     dom.kinetic.classList.add('is-jackpot');
                     dom.energy.classList.add('is-jackpot');
                     dom.power.classList.add('is-jackpot');
-                } else {
-                    if (kineticWeapon.type === 'Exotic') { dom.kinetic.classList.add('is-exotic'); } else { dom.kinetic.classList.add('is-legendary'); }
-                    if (energyWeapon.type === 'Exotic') { dom.energy.classList.add('is-exotic'); } else { dom.energy.classList.add('is-legendary'); }
-                    if (powerWeapon.type === 'Exotic') { dom.power.classList.add('is-exotic'); } else { dom.power.classList.add('is-legendary'); }
                 }
                 
+                if (kineticWeapon.type === 'Exotic') { dom.kinetic.classList.add('is-exotic'); } else { dom.kinetic.classList.add('is-legendary'); }
+                if (energyWeapon.type === 'Exotic') { dom.energy.classList.add('is-exotic'); } else { dom.energy.classList.add('is-legendary'); }
+                if (powerWeapon.type === 'Exotic') { dom.power.classList.add('is-exotic'); } else { dom.power.classList.add('is-legendary'); }
+                
                 dom.map.classList.add('is-map');
-                const subclassColor = subclass.color;
-                dom.subclass.style.borderColor = subclassColor;
-                dom.subclass.style.boxShadow = `0 0 15px ${subclassColor}66`;
+                if (subclass && subclass.color) {
+                    dom.subclass.style.borderColor = subclass.color;
+                    dom.subclass.style.boxShadow = `0 0 15px ${subclass.color}66`;
+                }
+
     
                 button.disabled = false;
                 dom.lockToggles.forEach(toggle => toggle.disabled = false); 
                 button.textContent = originalText;
             }
-    
-            dom.generateBtn.addEventListener('click', () => handleGeneration(false));
-    
-            dom.lockToggles.forEach(toggle => {
-                toggle.addEventListener('click', () => {
-                    if(!currentBuild) return; 
-                    const slot = toggle.dataset.slot;
-                    lockStates[slot] = !lockStates[slot];
-                    toggle.classList.toggle('locked', lockStates[slot]);
-                    dom[slot].classList.toggle('is-locked', lockStates[slot]);
-                });
-            });
+
+            init();
         });
     </script>
 </body>
