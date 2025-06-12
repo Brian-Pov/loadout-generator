@@ -242,6 +242,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM content loaded. Initializing script.");
+
             // --- DATA & ICONS (Destiny-Inspired) ---
             const icons = {
                 ammo: { Primary: `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="45" stroke-width="10" stroke="#fff" fill="none"/><circle cx="50" cy="50" r="25" fill="#fff"/></svg>`, Special: `<svg viewBox="0 0 100 100" fill="#a7ff83"><polygon points="50,5 95,95 5,95" stroke-width="5" stroke="#fff" fill="none"/><polygon points="50,25 80,80 20,80" fill="#fff"/></svg>`, Heavy: `<svg viewBox="0 0 100 100" fill="#8f6bff"><path d="M50 5 L95 35 L95 65 L50 95 L5 65 L5 35 Z" stroke-width="5" stroke="#fff" fill="none"/><path d="M50 25 L80 45 L80 55 L50 75 L20 55 L20 45 Z" fill="#fff"/></svg>` },
@@ -306,32 +308,33 @@
                 generateBtn: document.getElementById('generate-build-btn'),
                 specialLoadoutsToggle: document.getElementById('special-loadouts')
             };
+
+            console.log("DOM elements targeted. Found generate button:", dom.generateBtn);
+            console.log("Found special loadouts toggle:", dom.specialLoadoutsToggle);
             
-            // --- INITIALIZATION ---
-            function init() {
-                dom.generateBtn.disabled = true;
-                dom.lockToggles.forEach(toggle => toggle.disabled = true);
-                
-                document.fonts.ready.then(() => {
-                    dom.generateBtn.disabled = false;
+            // --- INITIAL STATE ---
+            dom.generateBtn.disabled = true;
+            dom.lockToggles.forEach(toggle => toggle.disabled = true);
+            
+            document.fonts.ready.then(() => {
+                dom.generateBtn.disabled = false;
+            });
+            
+            // --- EVENT LISTENERS ---
+            dom.generateBtn.addEventListener('click', () => {
+                const forceJackpot = dom.specialLoadoutsToggle.checked;
+                handleGeneration(forceJackpot);
+            });
+    
+            dom.lockToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    if(!currentBuild) return; 
+                    const slot = toggle.dataset.slot;
+                    lockStates[slot] = !lockStates[slot];
+                    toggle.classList.toggle('locked', lockStates[slot]);
+                    dom[slot].classList.toggle('is-locked', lockStates[slot]);
                 });
-                
-                // --- EVENT LISTENERS ---
-                dom.generateBtn.addEventListener('click', () => {
-                    const forceJackpot = dom.specialLoadoutsToggle.checked;
-                    handleGeneration(forceJackpot);
-                });
-        
-                dom.lockToggles.forEach(toggle => {
-                    toggle.addEventListener('click', () => {
-                        if(!currentBuild) return; 
-                        const slot = toggle.dataset.slot;
-                        lockStates[slot] = !lockStates[slot];
-                        toggle.classList.toggle('locked', lockStates[slot]);
-                        dom[slot].classList.toggle('is-locked', lockStates[slot]);
-                    });
-                });
-            }
+            });
 
     
             // --- FUNCTIONS ---
@@ -343,17 +346,14 @@
                 let weaponName = weapon.name;
                 
                 if (jackpotTheme) {
-                    // For standard jackpots, display the theme's weapon text
                     if (jackpotTheme.weaponText && typeof jackpotTheme.weaponText !== 'object') {
                         weaponName = jackpotTheme.weaponText;
                     }
-                    // For complex jackpots like Foundry Clash
                     else if (jackpotTheme.weaponText && typeof jackpotTheme.weaponText === 'object') {
                          if (weapon.slot === 'kinetic') weaponName = jackpotTheme.weaponText.kinetic;
                          else if (weapon.slot === 'energy') weaponName = jackpotTheme.weaponText.energy;
                          else if (weapon.slot === 'power') weaponName = jackpotTheme.weaponText.power;
                     }
-                     // For specific weapon jackpots, the name is already set
                     else if (!jackpotTheme.weaponText) {
                          weaponName = weapon.name;
                     }
@@ -482,6 +482,7 @@
             }
             
             async function handleGeneration(isJackpotForced = false) {
+                console.log("handleGeneration called. Forced jackpot:", isJackpotForced);
                 const button = dom.generateBtn;
                 button.disabled = true;
                 const originalText = button.textContent;
@@ -555,8 +556,9 @@
                 }
     
                 if (!loadout) {
+                     console.error("Failed to generate a valid loadout.");
                      dom.errorMessage.textContent = 'Could not generate a valid loadout. Please try again.';
-                     dom.generateBtn.disabled = false;
+                     button.disabled = false;
                      button.textContent = originalText;
                      return;
                 }
@@ -602,8 +604,6 @@
                 dom.lockToggles.forEach(toggle => toggle.disabled = false); 
                 button.textContent = originalText;
             }
-
-            init();
         });
     </script>
 </body>
