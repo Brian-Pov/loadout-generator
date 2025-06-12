@@ -343,15 +343,15 @@
             // --- FUNCTIONS ---
             const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
     
-            const createWeaponCardContent = (weapon, jackpotTheme = null) => { 
-                const isExotic = weapon.type === 'Exotic'; 
-                let title = jackpotTheme ? jackpotTheme.name : weapon.category;
+            const createWeaponCardContent = (weapon, jackpotTheme = null) => {
+                const isExotic = weapon.type === 'Exotic';
+                let title = weapon.category;
                 let weaponName = weapon.name;
-                
+
                 if (jackpotTheme) {
                     title = jackpotTheme.name;
-                    // If the weapon is a placeholder (not the specific exotic), use the theme's text.
-                    if (weapon.type !== 'Exotic' && jackpotTheme.weaponText) {
+                    // If the weapon is a generic placeholder, use the jackpot's specific text.
+                    if (weapon.isGeneric && jackpotTheme.weaponText) {
                         if (typeof jackpotTheme.weaponText === 'object') {
                             if (weapon.slot === 'kinetic') weaponName = jackpotTheme.weaponText.kinetic;
                             else if (weapon.slot === 'energy') weaponName = jackpotTheme.weaponText.energy;
@@ -359,10 +359,10 @@
                         } else {
                             weaponName = jackpotTheme.weaponText;
                         }
-                    } 
-                    // If it IS the exotic, its name is already correct from `weapon.name`.
+                    }
+                    // Otherwise, `weaponName` remains the weapon's actual name (e.g., "One Thousand Voices").
                 }
-               
+
                 return `<div class="reel-item" style="height: 100%;">
                             <div class="item-header">
                                 <h3 class="item-name !text-xs sm:!text-sm !font-normal normal-case text-gray-400">${title}</h3>
@@ -374,7 +374,7 @@
                                 <div class="icon-footer" style="color:${isExotic ? '#FFD700' : 'white'}">${icons.ammo[weapon.ammo] || ''}</div>
                                 <span>${weapon.ammo || ''}</span>
                             </div>
-                        </div>`; 
+                        </div>`;
             };
             const createSubclassCardContent = (subclass) => `<div class="reel-item" style="height: 100%;"><h3 class="item-name !text-base sm:!text-lg" style="color:${subclass.color}">${subclass.name}</h3><div class="icon-main">${subclass.icon}</div><div class="item-info-footer"><span>Element</span></div></div>`;
             const createMapCardContent = (mapName) => `
