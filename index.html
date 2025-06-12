@@ -527,8 +527,10 @@
                         isJackpotRoll = false; // Force a normal roll if no jackpots are available
                     } else {
                         const randomThemeKey = getRandomItem(availableJackpotKeys);
-                        jackpotTheme = jackpotSources[randomThemeKey];
-                        jackpotSources[randomThemeKey].cooldown = 5; // Set cooldown for 5 presses
+                        // IMPORTANT: Set cooldown on the original object immediately.
+                        jackpotSources[randomThemeKey].cooldown = 5; 
+                        // IMPORTANT: Create a COPY of the theme for this specific roll to prevent mutation.
+                        jackpotTheme = { ...jackpotSources[randomThemeKey], key: randomThemeKey };
                         console.log(`Chose jackpot: ${randomThemeKey}. Cooldown set to 5.`);
                     
                         // Specific Jackpot Logic
