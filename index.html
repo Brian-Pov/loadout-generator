@@ -254,22 +254,22 @@
             const pvpMaps = ["Javelin-4", "The Burnout", "Endless Vale", "Midtown", "Eternity", "Wormhaven", "The Anomaly", "Bannerfall", "Convergence", "Fragment", "Distant Shore", "Altar of Flame", "Pacifica", "Radiant Cliffs", "Disjunction", "Cathedral of Dusk", "Meltdown", "Rusted Lands", "Vostok", "Twilight Gap", "Widow's Court", "The Dead Cliffs", "Eventide Labs", "Cirrus Plaza", "Multiplex"];
             
             const jackpotSources = {
-                 newLights: { name: "New Lights", weaponText: "Blue Rarity Only" },
-                 raid: { name: 'Raid Night', weaponText: 'Raid Weapon' },
-                 dungeon: { name: 'Spelunker', weaponText: 'Dungeon Weapon' },
-                 vanguard: { name: 'The Vanguard\'s Armory', weaponText: 'Vanguard Weapon' },
-                 crucible: { name: 'The Crucible\'s Finest', weaponText: 'Crucible Weapon' },
-                 gambit: { name: 'The Drifter\'s Gambit', weaponText: 'Gambit Weapon' },
-                 texMechanica: { name: "High Noon", weaponText: "Tex Mechanica Weapon" },
-                 pointBlank: { name: "Point Blank", weaponText: "Sidearm, Shotgun, or Sword" },
-                 threeStringSymphony: { name: "Three-String Symphony", weaponText: "Bow Only"},
-                 lionsPride: { name: "The Lion's Pride", weaponText: "Grenade Launcher Only"},
-                 blackArmory: { name: "Black Armory's Legacy", weaponText: "Black Armory Weapon" },
-                 foundryClash: { name: "Foundry Clash", weaponText: { kinetic: "HAKKE Weapon", energy: "SUROS Weapon", power: "Any Power Weapon" } },
-                 greenWithEnvy: { name: "Green with Envy", weaponText: "Green Rarity Only"},
-                 queensGuard: { name: "The Queen's Guard", weaponText: "Last Wish or Dreaming City Weapon"},
-                 eighthSeraph: { name: "The Eighth Seraph", weaponText: "IKELOS or Seventh Seraph Weapon"},
-                 hiveGodSlayer: { name: "Hive God Slayer", weaponText: "Crota or King's Fall weapon"}
+                 newLights: { name: "New Lights", weaponText: "Blue Rarity Only", cooldown: 0 },
+                 raid: { name: 'Raid Night', weaponText: 'Raid Weapon', cooldown: 0 },
+                 dungeon: { name: 'Spelunker', weaponText: 'Dungeon Weapon', cooldown: 0 },
+                 vanguard: { name: 'The Vanguard\'s Armory', weaponText: 'Vanguard Weapon', cooldown: 0 },
+                 crucible: { name: 'The Crucible\'s Finest', weaponText: 'Crucible Weapon', cooldown: 0 },
+                 gambit: { name: 'The Drifter\'s Gambit', weaponText: 'Gambit Weapon', cooldown: 0 },
+                 texMechanica: { name: "High Noon", weaponText: "Tex Mechanica Weapon", cooldown: 0 },
+                 pointBlank: { name: "Point Blank", weaponText: "Sidearm, Shotgun, or Sword", cooldown: 0 },
+                 threeStringSymphony: { name: "Three-String Symphony", weaponText: "Bow Only", cooldown: 0},
+                 lionsPride: { name: "The Lion's Pride", weaponText: "Grenade Launcher Only", cooldown: 0},
+                 blackArmory: { name: "Black Armory's Legacy", weaponText: "Black Armory Weapon", cooldown: 0 },
+                 foundryClash: { name: "Foundry Clash", weaponText: { kinetic: "HAKKE Weapon", energy: "SUROS Weapon", power: "Any Power Weapon" }, cooldown: 0 },
+                 greenWithEnvy: { name: "Green with Envy", weaponText: "Green Rarity Only", cooldown: 0},
+                 queensGuard: { name: "The Queen's Guard", weaponText: "Last Wish or Dreaming City Weapon", cooldown: 0},
+                 eighthSeraph: { name: "The Eighth Seraph", weaponText: "IKELOS or Seventh Seraph Weapon", cooldown: 0},
+                 hiveGodSlayer: { name: "Hive God Slayer", weaponText: "Crota or King's Fall weapon", cooldown: 0}
             };
            
             const weaponPools = {
@@ -485,6 +485,15 @@
             }
             
             async function handleGeneration(isJackpotForced = false) {
+                // Decrease all non-zero cooldowns by 1
+                Object.keys(jackpotSources).forEach(key => {
+                    if (jackpotSources[key].cooldown > 0) {
+                        jackpotSources[key].cooldown--;
+                    }
+                });
+                console.log("Current Cooldowns:", Object.fromEntries(Object.entries(jackpotSources).map(([k, v]) => [k, v.cooldown])));
+
+
                 console.log("handleGeneration called. Forced jackpot:", isJackpotForced);
                 const button = dom.generateBtn;
                 button.disabled = true;
@@ -506,87 +515,96 @@
                 });
     
                 const isAnySlotLocked = Object.values(lockStates).some(state => state);
-                const isJackpotRoll = !isAnySlotLocked && (isJackpotForced || Math.random() < 0.15);
+                let isJackpotRoll = !isAnySlotLocked && (isJackpotForced || Math.random() < 0.15);
                 let jackpotTheme = null;
                 let loadout;
     
                 if (isJackpotRoll) {
-                    const specialThemes = Object.keys(jackpotSources);
-                    const randomThemeKey = getRandomItem(specialThemes);
-                    jackpotTheme = jackpotSources[randomThemeKey];
+                    const availableJackpotKeys = Object.keys(jackpotSources).filter(key => jackpotSources[key].cooldown === 0);
                     
-                    // Specific Jackpot Logic
-                    if (randomThemeKey === 'threeStringSymphony') {
-                        const levisBreath = exoticWeapons.power.find(w => w.name === "Leviathan's Breath");
-                        loadout = {
-                            kineticWeapon: { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true, slot: 'kinetic' },
-                            energyWeapon: { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true, slot: 'energy' },
-                            powerWeapon: { ...levisBreath, slot: 'power' },
-                        };
-                        jackpotTheme.weaponText = null; 
-                    } else if (randomThemeKey === 'lionsPride') {
-                        const fightingLion = exoticWeapons.energy.find(w => w.name === "Fighting Lion");
-                        loadout = {
-                            kineticWeapon: { name: "Grenade Launcher", type: "Legendary", ammo: "Special", category: "Grenade Launcher", isGeneric: true, slot: 'kinetic' },
-                            energyWeapon: { ...fightingLion, slot: 'energy' },
-                            powerWeapon: { name: "Grenade Launcher", type: "Legendary", ammo: "Heavy", category: "Grenade Launcher", isGeneric: true, slot: 'power' },
-                        };
-                         jackpotTheme.weaponText = null;
-                    } else if (randomThemeKey === 'queensGuard') {
-                        const oneKV = exoticWeapons.power.find(w => w.name === "One Thousand Voices");
-                        loadout = {
-                            kineticWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
-                            energyWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
-                            powerWeapon: { ...oneKV, slot: 'power' },
-                        };
-                    } else if (randomThemeKey === 'eighthSeraph') {
-                        const sleeper = exoticWeapons.power.find(w => w.name === "Sleeper Simulant");
-                        loadout = {
-                            kineticWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
-                            energyWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
-                            powerWeapon: { ...sleeper, slot: 'power' },
-                        };
-                    } else if (randomThemeKey === 'hiveGodSlayer') {
-                        const hiveExotics = ['Thorn', 'Osteo Striga', 'Touch of Malice', 'Necrochasm', 'Ex Diris', 'Whisper of the Worm'];
-                        const chosenExoticName = getRandomItem(hiveExotics);
-                        let chosenExotic = null;
-                        let exoticSlotType = '';
-
-                        if (exoticWeapons.kinetic.some(w => w.name === chosenExoticName)) {
-                            chosenExotic = exoticWeapons.kinetic.find(w => w.name === chosenExoticName);
-                            exoticSlotType = 'kinetic';
-                        } else if (exoticWeapons.energy.some(w => w.name === chosenExoticName)) {
-                            chosenExotic = exoticWeapons.energy.find(w => w.name === chosenExoticName);
-                            exoticSlotType = 'energy';
-                        } else {
-                            chosenExotic = exoticWeapons.power.find(w => w.name === chosenExoticName);
-                            exoticSlotType = 'power';
-                        }
-                        
-                        const placeholderWeapon = { name: "Crota or King's Fall weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true };
-                        loadout = {
-                            kineticWeapon: exoticSlotType === 'kinetic' ? { ...chosenExotic, slot: 'kinetic' } : { ...placeholderWeapon, slot: 'kinetic' },
-                            energyWeapon: exoticSlotType === 'energy' ? { ...chosenExotic, slot: 'energy' } : { ...placeholderWeapon, slot: 'energy' },
-                            powerWeapon: exoticSlotType === 'power' ? { ...chosenExotic, slot: 'power' } : { ...placeholderWeapon, slot: 'power' },
-                        };
-
-                    } else if (typeof jackpotTheme.weaponText === 'object') {
-                         loadout = {
-                            kineticWeapon: { name: jackpotTheme.weaponText.kinetic, slot: 'kinetic', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name },
-                            energyWeapon: { name: jackpotTheme.weaponText.energy, slot: 'energy', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name },
-                            powerWeapon: { name: jackpotTheme.weaponText.power, slot: 'power', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name },
-                        };
+                    if (availableJackpotKeys.length === 0) {
+                        console.log("All jackpots on cooldown. Skipping jackpot roll.");
+                        isJackpotRoll = false; // Force a normal roll if no jackpots are available
                     } else {
-                         loadout = {
-                            kineticWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
-                            energyWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
-                            powerWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'power' },
-                        };
-                    }
-                    dom.jackpotDisplay.textContent = jackpotTheme.name;
-                    dom.jackpotDisplay.classList.remove('hidden');
+                        const randomThemeKey = getRandomItem(availableJackpotKeys);
+                        jackpotTheme = jackpotSources[randomThemeKey];
+                        jackpotSources[randomThemeKey].cooldown = 5; // Set cooldown for 5 presses
+                        console.log(`Chose jackpot: ${randomThemeKey}. Cooldown set to 5.`);
                     
-                } else {
+                        // Specific Jackpot Logic
+                        if (randomThemeKey === 'threeStringSymphony') {
+                            const levisBreath = exoticWeapons.power.find(w => w.name === "Leviathan's Breath");
+                            loadout = {
+                                kineticWeapon: { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true, slot: 'kinetic' },
+                                energyWeapon: { name: "Bow", type: "Legendary", ammo: "Primary", category: "Bow", isGeneric: true, slot: 'energy' },
+                                powerWeapon: { ...levisBreath, slot: 'power' },
+                            };
+                            jackpotTheme.weaponText = null; 
+                        } else if (randomThemeKey === 'lionsPride') {
+                            const fightingLion = exoticWeapons.energy.find(w => w.name === "Fighting Lion");
+                            loadout = {
+                                kineticWeapon: { name: "Grenade Launcher", type: "Legendary", ammo: "Special", category: "Grenade Launcher", isGeneric: true, slot: 'kinetic' },
+                                energyWeapon: { ...fightingLion, slot: 'energy' },
+                                powerWeapon: { name: "Grenade Launcher", type: "Legendary", ammo: "Heavy", category: "Grenade Launcher", isGeneric: true, slot: 'power' },
+                            };
+                            jackpotTheme.weaponText = null;
+                        } else if (randomThemeKey === 'queensGuard') {
+                            const oneKV = exoticWeapons.power.find(w => w.name === "One Thousand Voices");
+                            loadout = {
+                                kineticWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
+                                energyWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
+                                powerWeapon: { ...oneKV, slot: 'power' },
+                            };
+                        } else if (randomThemeKey === 'eighthSeraph') {
+                            const sleeper = exoticWeapons.power.find(w => w.name === "Sleeper Simulant");
+                            loadout = {
+                                kineticWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
+                                energyWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
+                                powerWeapon: { ...sleeper, slot: 'power' },
+                            };
+                        } else if (randomThemeKey === 'hiveGodSlayer') {
+                            const hiveExotics = ['Thorn', 'Osteo Striga', 'Touch of Malice', 'Necrochasm', 'Ex Diris', 'Whisper of the Worm'];
+                            const chosenExoticName = getRandomItem(hiveExotics);
+                            let chosenExotic = null;
+                            let exoticSlotType = '';
+
+                            if (exoticWeapons.kinetic.some(w => w.name === chosenExoticName)) {
+                                chosenExotic = exoticWeapons.kinetic.find(w => w.name === chosenExoticName);
+                                exoticSlotType = 'kinetic';
+                            } else if (exoticWeapons.energy.some(w => w.name === chosenExoticName)) {
+                                chosenExotic = exoticWeapons.energy.find(w => w.name === chosenExoticName);
+                                exoticSlotType = 'energy';
+                            } else {
+                                chosenExotic = exoticWeapons.power.find(w => w.name === chosenExoticName);
+                                exoticSlotType = 'power';
+                            }
+                            
+                            const placeholderWeapon = { name: "Crota or King's Fall weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true };
+                            loadout = {
+                                kineticWeapon: exoticSlotType === 'kinetic' ? { ...chosenExotic, slot: 'kinetic' } : { ...placeholderWeapon, slot: 'kinetic' },
+                                energyWeapon: exoticSlotType === 'energy' ? { ...chosenExotic, slot: 'energy' } : { ...placeholderWeapon, slot: 'energy' },
+                                powerWeapon: exoticSlotType === 'power' ? { ...chosenExotic, slot: 'power' } : { ...placeholderWeapon, slot: 'power' },
+                            };
+
+                        } else if (typeof jackpotTheme.weaponText === 'object') {
+                            loadout = {
+                                kineticWeapon: { name: jackpotTheme.weaponText.kinetic, slot: 'kinetic', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
+                                energyWeapon: { name: jackpotTheme.weaponText.energy, slot: 'energy', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
+                                powerWeapon: { name: jackpotTheme.weaponText.power, slot: 'power', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true },
+                            };
+                        } else {
+                            loadout = {
+                                kineticWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
+                                energyWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
+                                powerWeapon: { name: jackpotTheme.weaponText, type: 'Legendary', ammo: 'Any', category: jackpotTheme.name, isGeneric: true, slot: 'power' },
+                            };
+                        }
+                        dom.jackpotDisplay.textContent = jackpotTheme.name;
+                        dom.jackpotDisplay.classList.remove('hidden');
+                    }
+                }
+                
+                if (!isJackpotRoll) {
                      const lockedItems = {};
                     if (lockStates.subclass) lockedItems.subclass = currentBuild.subclass;
                     if (lockStates.kinetic) lockedItems.kineticWeapon = currentBuild.kineticWeapon;
