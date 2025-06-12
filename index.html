@@ -268,7 +268,8 @@
                  foundryClash: { name: "Foundry Clash", weaponText: { kinetic: "HAKKE Weapon", energy: "SUROS Weapon", power: "Any Power Weapon" } },
                  greenWithEnvy: { name: "Green with Envy", weaponText: "Green Rarity Only"},
                  queensGuard: { name: "The Queen's Guard", weaponText: "Last Wish or Dreaming City Weapon"},
-                 eighthSeraph: { name: "The Eighth Seraph", weaponText: "IKELOS or Seventh Seraph Weapon"}
+                 eighthSeraph: { name: "The Eighth Seraph", weaponText: "IKELOS or Seventh Seraph Weapon"},
+                 hiveGodSlayer: { name: "Hive God Slayer", weaponText: "Crota or King's Fall weapon"}
             };
            
             const weaponPools = {
@@ -282,7 +283,7 @@
             const exoticWeapons = {
                 kinetic: [ { name: "Wish-Ender", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Malfeasance", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "The Last Word", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Khvostov 7G-0X", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Monte Carlo", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Witherhoard", type: "Exotic", ammo: "Special", category: "Grenade Launcher" }, { name: "Izanagi's Burden", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Arbalest", type: "Exotic", ammo: "Special", category: "Linear Fusion Rifle" }, { name: "Ace of Spades", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Thorn", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Hawkmoon", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Outbreak Perfected", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "The Jade Rabbit", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "MIDA Multi-Tool", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "No Time to Explain", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Sturm", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Bad Juju", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Rat King", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "Sweet Business", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Revision Zero", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Cryosthesia 77K", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "Forerunner", type: "Exotic", ammo: "Special", category: "Sidearm" }, { name: "Euphony", type: "Exotic", ammo: "Special", category: "Linear Fusion Rifle" }, { name: "Crimson", type: "Exotic", ammo: "Primary", category: "Hand Cannon"}, { name: "Osteo Striga", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Cerberus+1", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Lumina", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Verglas Curve", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Final Warning", type: "Exotic", ammo: "Primary", category: "Sidearm" }, { name: "The Chaperone", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Huckleberry", type: "Exotic", ammo: "Primary", category: "SMG" }, { name: "Dead Man's Tale", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Wish-Keeper", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Wicked Implement", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Touch of Malice", type: "Exotic", ammo: "Primary", category: "Scout Rifle" }, { name: "Necrochasm", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "Conditional Finality", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Vigilance Wing", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Quicksilver Storm", type: "Exotic", ammo: "Primary", category: "Auto Rifle" }, { name: "No Land Beyond", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }],
                 energy: [ { name: "Sunshot", type: "Exotic", ammo: "Primary", category: "Hand Cannon" }, { name: "Trinity Ghoul", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Riskrunner", type: "Exotic", ammo: "Primary", category: "SMG" }, { name: "Graviton Lance", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" }, { name: "Jötunn", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Telesto", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Merciless", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Cloudstrike", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Tessellation", type: "Exotic", ammo: "Special", category: "Fusion Rifle" }, { name: "Still Hunt", type: "Exotic", ammo: "Special", category: "Sniper Rifle" }, { name: "Ager's Scepter", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Divinity", type: "Exotic", ammo: "Special", category: "Trace Rifle" }, { name: "Vex Mythoclast", type: "Exotic", ammo: "Primary", category: "Fusion Rifle" }, { name: "Le Monarque", type: "Exotic", ammo: "Primary", category: "Bow" }, { name: "Symmetry", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Tommy's Matchbook", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Devil's Ruin", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ticuu's Divination", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "The Manticore", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Trespasser", type: "Exotic", ammo: "Primary", category: "Sidearm"}, { name: "Ex Diris", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Centrifuse", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Tarrabah", type: "Exotic", ammo: "Primary", category: "SMG"}, { name: "Hard Light", type: "Exotic", ammo: "Primary", category: "Auto Rifle"}, { name: "Borealis", type: "Exotic", ammo: "Special", category: "Sniper Rifle"}, { name: "Skyburner's Oath", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Fourth Horseman", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Lord of Wolves", type: "Exotic", ammo: "Special", category: "Shotgun"}, { name: "Eriana's Vow", type: "Exotic", ammo: "Special", category: "Hand Cannon" }, { name: "Dead Messenger", type: "Exotic", ammo: "Special", category: "Grenade Launcher"}, { name: "Fighting Lion", type: "Exotic", ammo: "Primary", category: "Grenade Launcher"}, { name: "Ruinous Effigy", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Delicate Tomb", type: "Exotic", ammo: "Special", category: "Fusion Rifle"}, { name: "Wavesplitter", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Prometheus Lens", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Coldheart", type: "Exotic", ammo: "Primary", category: "Trace Rifle"}, { name: "Buried Bloodline", type: "Exotic", ammo: "Special", category: "Sidearm"}, { name: "The Navigator", type: "Exotic", ammo: "Special", category: "Trace Rifle"}, { name: "Hierarchy of Needs", type: "Exotic", ammo: "Primary", category: "Bow"}, { name: "Collective Obligation", type: "Exotic", ammo: "Primary", category: "Pulse Rifle"}, { name: "Polaris Lance", type: "Exotic", ammo: "Primary", category: "Scout Rifle"}, { name: "Duality", type: "Exotic", ammo: "Special", category: "Shotgun" }, { name: "Red Death Reformed", type: "Exotic", ammo: "Primary", category: "Pulse Rifle" } ],
-                power: [ { name: "Gjallarhorn", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "The Lament", type: "Exotic", ammo: "Heavy", category: "Sword" }, { name: "Thunderlord", type: "Exotic", ammo: "Heavy", category: "Machine Gun" }, { name: "Leviathan's Breath", type: "Exotic", ammo: "Heavy", category: "Bow" }, { name: "Sleeper Simulant", type: "Exotic", ammo: "Heavy", category: "Linear Fusion Rifle" }, { name: "Tractor Cannon", type: "Exotic", ammo: "Heavy", category: "Shotgun" }, { name: "Dragon's Breath", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "Xenophage", type: "Exotic", ammo: "Heavy", category: "Machine Gun"}, { name: "The Prospector", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Two-Tailed Fox", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Black Talon", type: "Exotic", ammo: "Heavy", category: "Sword"}, { name: "Deathbringer", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Wardcliff Coil", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Eyes of Tomorrow", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Colony", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Microcosm", type: "Exotic", ammo: "Heavy", category: "Trace Rifle" }, { name: "One Thousand Voices", type: "Exotic", ammo: "Heavy", category: "Fusion Rifle" } ]
+                power: [ { name: "Gjallarhorn", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "The Lament", type: "Exotic", ammo: "Heavy", category: "Sword" }, { name: "Thunderlord", type: "Exotic", ammo: "Heavy", category: "Machine Gun" }, { name: "Leviathan's Breath", type: "Exotic", ammo: "Heavy", category: "Bow" }, { name: "Sleeper Simulant", type: "Exotic", ammo: "Heavy", category: "Linear Fusion Rifle" }, { name: "Tractor Cannon", type: "Exotic", ammo: "Heavy", category: "Shotgun" }, { name: "Dragon's Breath", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher" }, { name: "Xenophage", type: "Exotic", ammo: "Heavy", category: "Machine Gun"}, { name: "The Prospector", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Two-Tailed Fox", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Black Talon", type: "Exotic", ammo: "Heavy", category: "Sword"}, { name: "Deathbringer", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Wardcliff Coil", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "Eyes of Tomorrow", type: "Exotic", ammo: "Heavy", category: "Rocket Launcher"}, { name: "The Colony", type: "Exotic", ammo: "Heavy", category: "Grenade Launcher"}, { name: "Microcosm", type: "Exotic", ammo: "Heavy", category: "Trace Rifle" }, { name: "One Thousand Voices", type: "Exotic", ammo: "Heavy", category: "Fusion Rifle" }, { name: "Whisper of the Worm", type: "Exotic", ammo: "Heavy", category: "Sniper Rifle" } ]
             };
             
             weaponPools.kinetic = [...exoticWeapons.kinetic, ...genericKinetic];
@@ -348,18 +349,18 @@
                 let weaponName = weapon.name;
                 
                 if (jackpotTheme) {
-                    if (jackpotTheme.weaponText && typeof jackpotTheme.weaponText !== 'object') {
-                        weaponName = jackpotTheme.weaponText;
-                    }
-                    else if (jackpotTheme.weaponText && typeof jackpotTheme.weaponText === 'object') {
-                         if (weapon.slot === 'kinetic') weaponName = jackpotTheme.weaponText.kinetic;
-                         else if (weapon.slot === 'energy') weaponName = jackpotTheme.weaponText.energy;
-                         else if (weapon.slot === 'power') weaponName = jackpotTheme.weaponText.power;
-                    }
-                    else if (!jackpotTheme.weaponText) {
-                         weaponName = weapon.name;
-                    }
                     title = jackpotTheme.name;
+                    // If the weapon is a placeholder (not the specific exotic), use the theme's text.
+                    if (weapon.type !== 'Exotic' && jackpotTheme.weaponText) {
+                        if (typeof jackpotTheme.weaponText === 'object') {
+                            if (weapon.slot === 'kinetic') weaponName = jackpotTheme.weaponText.kinetic;
+                            else if (weapon.slot === 'energy') weaponName = jackpotTheme.weaponText.energy;
+                            else if (weapon.slot === 'power') weaponName = jackpotTheme.weaponText.power;
+                        } else {
+                            weaponName = jackpotTheme.weaponText;
+                        }
+                    } 
+                    // If it IS the exotic, its name is already correct from `weapon.name`.
                 }
                
                 return `<div class="reel-item" style="height: 100%;">
@@ -534,19 +535,41 @@
                     } else if (randomThemeKey === 'queensGuard') {
                         const oneKV = exoticWeapons.power.find(w => w.name === "One Thousand Voices");
                         loadout = {
-                            kineticWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: "The Queen's Guard", isGeneric: true, slot: 'kinetic' },
-                            energyWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: "The Queen's Guard", isGeneric: true, slot: 'energy' },
+                            kineticWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
+                            energyWeapon: { name: "Last Wish or Dreaming City Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
                             powerWeapon: { ...oneKV, slot: 'power' },
                         };
-                        jackpotTheme.weaponText = "Last Wish or Dreaming City Weapon";
                     } else if (randomThemeKey === 'eighthSeraph') {
                         const sleeper = exoticWeapons.power.find(w => w.name === "Sleeper Simulant");
                         loadout = {
-                            kineticWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: "The Eighth Seraph", isGeneric: true, slot: 'kinetic' },
-                            energyWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: "The Eighth Seraph", isGeneric: true, slot: 'energy' },
+                            kineticWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'kinetic' },
+                            energyWeapon: { name: "IKELOS or Seventh Seraph Weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true, slot: 'energy' },
                             powerWeapon: { ...sleeper, slot: 'power' },
                         };
-                        jackpotTheme.weaponText = "IKELOS or Seventh Seraph Weapon";
+                    } else if (randomThemeKey === 'hiveGodSlayer') {
+                        const hiveExotics = ['Thorn', 'Osteo Striga', 'Touch of Malice', 'Necrochasm', 'Ex Diris', 'Whisper of the Worm'];
+                        const chosenExoticName = getRandomItem(hiveExotics);
+                        let chosenExotic = null;
+                        let exoticSlotType = '';
+
+                        if (exoticWeapons.kinetic.some(w => w.name === chosenExoticName)) {
+                            chosenExotic = exoticWeapons.kinetic.find(w => w.name === chosenExoticName);
+                            exoticSlotType = 'kinetic';
+                        } else if (exoticWeapons.energy.some(w => w.name === chosenExoticName)) {
+                            chosenExotic = exoticWeapons.energy.find(w => w.name === chosenExoticName);
+                            exoticSlotType = 'energy';
+                        } else {
+                            chosenExotic = exoticWeapons.power.find(w => w.name === chosenExoticName);
+                            exoticSlotType = 'power';
+                        }
+                        
+                        const placeholderWeapon = { name: "Crota or King's Fall weapon", type: "Legendary", ammo: "Any", category: jackpotTheme.name, isGeneric: true };
+                        loadout = {
+                            kineticWeapon: exoticSlotType === 'kinetic' ? { ...chosenExotic, slot: 'kinetic' } : { ...placeholderWeapon, slot: 'kinetic' },
+                            energyWeapon: exoticSlotType === 'energy' ? { ...chosenExotic, slot: 'energy' } : { ...placeholderWeapon, slot: 'energy' },
+                            powerWeapon: exoticSlotType === 'power' ? { ...chosenExotic, slot: 'power' } : { ...placeholderWeapon, slot: 'power' },
+                        };
+
                     } else if (typeof jackpotTheme.weaponText === 'object') {
                          loadout = {
                             kineticWeapon: { name: jackpotTheme.weaponText.kinetic, slot: 'kinetic', type: 'Legendary', ammo: 'Any', category: jackpotTheme.name },
